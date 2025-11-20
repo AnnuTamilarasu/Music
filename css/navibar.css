@@ -1,0 +1,39 @@
+body{
+                background:black;
+            }
+            .navibar{
+                background:black;
+                height:60px;
+                width:100%;
+                position:absolute;
+                top:0px;
+                left:0px;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+            }
+            .navibar button{
+                color:white;
+                background:rgb(13, 103, 13);
+                border:0;
+                border-radius:30px;
+                padding:7px;
+                font-size:1.7rem;
+                position:fixed;
+                top:5px;
+                right:20px;
+                cursor:pointer;
+            }
+            .navibar input{
+                width:50%;
+                height:40px;
+                border-radius:30px;
+                border:0;
+                font-size:1.6rem;
+                background:rgb(37, 37, 37);
+            }
+            .navibar input:hover{
+                border:2px;
+                border-color:white;
+                color:white;
+            }

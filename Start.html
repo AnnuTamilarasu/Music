@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .library{
+                width:5%;
+                height:510px;
+                background:rgb(37, 37, 37);
+                border-radius:20px;
+                position:fixed;
+                top:70px;
+                left:5px;
+                transition:width 0.3s;
+                overflow:visible;
+                z-index:10;
+                
+            }
+            .library.bigger{
+                width:20%;
+            }
+            .move{
+                color:grey;
+                background:rgb(37, 37, 37);
+                border:0;
+                font-size:1.6rem;
+                cursor:pointer;
+                position:absolute;
+                top:10px;
+                left:10px;
+                transition:left 0.3s;
+                
+            }
+            .move.bigger{
+                left:220px;
+            }
+            .move:hover::after {
+                content: "Open library";
+                position: absolute;
+                left: 60px; 
+                top: 0;
+                background: #333;
+                color: white;
+                padding: 5px 10px;
+                border-radius: 6px;
+                font-size: 0.9rem;
+                white-space: nowrap;
+                z-index:10;
+            }
+            .move.bigger:hover::after {
+                content: "Collapse library";
+                z-index:10;
+            }
+            .main{
+                width:93%;
+                height:510px;
+                background:rgb(37, 37, 37);
+                border-radius:20px;
+                position:fixed;
+                top:70px;
+                right:10px;
+                transition:width 0.3s;
+                overflow:visible;
+            }
+            .main.smaller{
+                width:78%
+            }
+
+        </style>
+        <link rel="stylesheet" href="css/navibar.css" />
+    </head>
+    <body>
+        <div class="navibar">
+            <input type="text" class="input" placeholder="Search..."/>
+            <button onclick="window.location.href='Login.html'">Login</button>
+        </div>
+        <div class="library">
+            <button class="move" id="moveI">></button>
+        </div>
+        <div class="main">
+
+        </div>
+        <script>
+            const move=document.getElementById('moveI');
+            const library=document.querySelector('.library');
+            const main=document.querySelector('.main');
+
+            move.addEventListener('click',()=>{
+                library.classList.toggle("bigger");
+                move.classList.toggle("bigger");
+                main.classList.toggle("smaller");
+
+                if (library.classList.contains("bigger")) {
+                    move.textContent = "<";
+                    } else {
+                    move.textContent = ">";
+                    }
+            });
+        </script>
+    </body>
+</html>
