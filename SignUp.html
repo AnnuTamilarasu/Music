@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
             body{
-                background:rgb(15, 15, 15);
+                background:black;
             }
             .container{
                 background:rgb(24, 24, 24);
@@ -18,7 +18,7 @@
                 left:320px;
                 display:flex;
                 flex-direction:column;
-                gap:30px;
+                gap:20px;
                 align-items:center;
             }
             .container h3{
@@ -45,7 +45,7 @@
             .container p{
                 color:red;
                 position:absolute;
-                top:150px;
+                top:135px;
                 left:170px;
                 display:none;
             }
@@ -58,37 +58,44 @@
             <button onclick="window.location.href='Login.html'">Login</button>
         </div>
         <div class="container">
-            <h3>Login</h3>
+            <h3>Sign up</h3>
             <input type="text" class="user" placeholder="username"/>
-            <input type="password" class="password" placeholder="password"/>
+            <input type="text" class="passOne" placeholder="password"/>
+            <input type="text" class="passTwo" placeholder="Enter password again"/>
             <button id="okay">OK</button>
-            <button onclick="window.location.href='SignUp.html'">SignUp</button>
-            <p id="remind">Username or password is incorrect</p>
+            <button onclick="window.location.href='Login.html'">Login</button>
+            <p id="remindOne">Two passwords are different!</p>
+            <p id="remindTwo">User already exist!</p>
         </div>
         <script>
             const user=document.querySelector(".user");
-            const password=document.querySelector(".password");
+            const passOne=document.querySelector(".passOne");
+            const passTwo=document.querySelector(".passTwo");
             const okay=document.querySelector("#okay");
-            const remind=document.querySelector("#remind");
+            const remindOne=document.querySelector('#remindOne');
+            const remindTwo=document.querySelector('#remindTwo');
 
             function addUser(){
                 const userInput=user.value.trim();
-                const passInput=password.value.trim();
+                const oneInput=passOne.value.trim();
+                const twoInput=passTwo.value.trim();
 
-                if(userInput===''||passInput==='')return;
-                
+                if(userInput===''||oneInput===''||twoInput==='')return;
+                if(oneInput!==twoInput){
+                    remindOne.style.display="block";
+                }
 
                 user.value='';
-                password.value='';
+                passOne.value='';
+                passTwo.value='';
 
             }
 
             okay.addEventListener('click',(event)=>{
                 event.preventDefault();
                 addUser();
-                window.location.href=Start.html;
+                window.location.href=Login.html;
             })
-
 
             
 
