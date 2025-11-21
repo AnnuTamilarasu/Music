@@ -14,12 +14,11 @@ body{
             }
             .navibar button{
                 color:white;
-                background:rgb(13, 103, 13);
+                background:rgb(4, 179, 4);
                 border:0;
                 border-radius:30px;
                 padding:7px;
                 font-size:1.7rem;
-                position:fixed;
                 top:5px;
                 right:20px;
                 cursor:pointer;

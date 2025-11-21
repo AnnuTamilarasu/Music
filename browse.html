@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Web API Tutorial</title>
+    <link rel="stylesheet" href="./CSS/navibar.css">
+    <link rel="stylesheet" href="./CSS/browse.css">
+</head>
+<body>
+    
+    <div class="container">        
+        <form action="">
+            <input type="hidden" id="hidden_token">
+
+            <div class="input-box">
+                <label for="select_genre" class="label">Genre:</label>
+                <select id="select_genre" class="select_genre">
+                    <option>Select Genre...</option>
+                </select>
+            </div>
+
+            <div class="input-box">
+                <label for="select_playlist" class="label">Playlists:</label>
+                <select id="select_playlist" class="select_playlist">
+                    <option>Select Playlist...</option>
+                </select>
+            </div>
+
+            <div class="small-container">
+                <button type="submit" id="btn_submit" class="button">Search</button>
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col-sm-6 px-0">
+                <!-- JS expects id = song-list -->
+                <div id="song-list" class="list-group"></div>
+            </div>
+
+            <!-- JS expects id = song-detail -->
+            <div class="offset-md-1 col-sm-4" id="song-detail"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
