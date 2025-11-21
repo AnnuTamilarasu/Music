@@ -75,7 +75,9 @@
             const remindOne=document.querySelector('#remindOne');
             const remindTwo=document.querySelector('#remindTwo');
 
-            function addUser(){
+
+            okay.addEventListener('click',async(event)=>{
+                event.preventDefault();
                 const userInput=user.value.trim();
                 const oneInput=passOne.value.trim();
                 const twoInput=passTwo.value.trim();
@@ -83,19 +85,28 @@
                 if(userInput===''||oneInput===''||twoInput==='')return;
                 if(oneInput!==twoInput){
                     remindOne.style.display="block";
+                    remindTwo.style.display="none";
+                    return
+                }
+
+                const response = await fetch("http://localhost:3000/signup", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username:userInput, password: oneInput })
+                });
+                const result = await response.json();
+
+                if (!result.success) {
+                    remindTwo.style.display = "block";
+                    remindOne.style.display="none";
+                    return;
                 }
 
                 user.value='';
                 passOne.value='';
                 passTwo.value='';
-
-            }
-
-            okay.addEventListener('click',(event)=>{
-                event.preventDefault();
-                addUser();
-                window.location.href=Login.html;
-            })
+                window.location.href="Login.html";
+            });
 
             
 

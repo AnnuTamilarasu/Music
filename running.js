@@ -1,0 +1,140 @@
+const express = require("express");
+const cors = require("cors");
+const { MongoClient } = require("mongodb");
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const uri = "mongodb+srv://AXkyJellyfish:A2Xky1314%28%29@cluster0.6ndamsl.mongodb.net/myApp?retryWrites=true&w=majority";
+const client = new MongoClient(uri);
+
+let usersCollection;
+
+
+async function startServer() {
+  try {
+    await client.connect();
+    console.log("MongoDB connected");
+
+    const db = client.db("myApp");
+    usersCollection = db.collection("users");
+
+    app.listen(3000, () => console.log("Server running on port 3000"));
+  } catch (err) {
+    console.error("Failed to connect to MongoDB:", err);
+  }
+}
+
+startServer();
+
+app.post("/signup", async (req, res) => {
+    console.log("SIGN UP");
+    console.log("Here");
+  try {
+    const { username, password } = req.body;
+
+    if (!username || !password) return res.json({ success: false, message: "Missing username or password" });
+
+    const existing = await usersCollection.findOne({ username });
+    if (existing) return res.json({ success: false, message: "User exists" });
+
+    await usersCollection.insertOne({ username, password });
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.json({ success: false, message: "Server error" });
+  }
+});
+
+app.post("/login", async (req, res) => {
+    console.log("LOGIN ROUTE HIT");
+  try {
+    const { username, password } = req.body;
+
+    if (!username || !password) return res.json({ success: false, message: "Missing username or password" });
+
+    const user = await usersCollection.findOne({ username });
+
+    if (!user || user.password !== password) {
+      return res.json({ success: false, message: "Invalid username or password" });
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.json({ success: false, message: "Server error" });
+  }
+});
+
+/*const express = require("express");
+const cors = require("cors");
+const { MongoClient } = require("mongodb");
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const uri = "mongodb+srv://AXkyJellyfish:A2Xky1314%28%29@cluster0.6ndamsl.mongodb.net/myApp?retryWrites=true&w=majority"; 
+const client = new MongoClient(uri);
+
+async function startServer() {
+    try {
+        await client.connect();
+        console.log("MongoDB connected");
+
+        app.listen(3000, () => console.log("Server running on port 3000"));
+    } catch(err) {
+        console.error("Failed to connect to MongoDB", err);
+    }
+}
+
+startServer();
+
+app.post("/signup", async (req, res) => {
+  try {
+
+    const db = client.db("myApp");
+    const users = db.collection("users");
+
+    const { username, password } = req.body;
+
+    const existing = await users.findOne({ username });
+    if (existing) {
+      return res.json({ success: false, message: "User exists" });
+    }
+
+    await users.insertOne({ username, password });
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.json({ success: false, message: "Server error" });
+  }
+});
+
+app.post("/login", async (req, res) => {
+    try {
+        await client.connect()
+
+        const db = client.db("myApp");
+        const users = db.collection("users");
+
+        const { username, password } = req.body;
+
+        const user = await users.findOne({ username, password });
+
+        if (user) {
+            // Login successful
+            res.json({ success: true });
+        } else {
+            // Invalid credentials
+            res.json({ success: false, message: "Invalid username or password" });
+        }
+    } catch (err) {
+        console.error(err);
+        res.json({ success: false, message: "Server error" });
+    }
+});
+
+app.listen(3000, () => console.log("Server running on port 3000"));*/
