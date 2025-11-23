@@ -54,6 +54,7 @@
     </head>
     <body>
         <div class="navibar">
+            <button onclick="window.location.href='index.html'">Home</button>
             <input type="text" class="input" placeholder="Search..."/>
             <button onclick="window.location.href='browse.html'">Browse</button>
             <button onclick="window.location.href='Login.html'">Login</button>
@@ -101,7 +102,7 @@
             user.value='';
             password.value='';
 
-            window.location.href = "Start.html";
+            window.location.href = "index.html";
         } else {
             remind.textContent = result.message;
             remind.style.display = "block";

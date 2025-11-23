@@ -29,8 +29,6 @@ async function startServer() {
 startServer();
 
 app.post("/signup", async (req, res) => {
-    console.log("SIGN UP");
-    console.log("Here");
   try {
     const { username, password } = req.body;
 
@@ -48,7 +46,6 @@ app.post("/signup", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-    console.log("LOGIN ROUTE HIT");
   try {
     const { username, password } = req.body;
 

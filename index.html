@@ -4,6 +4,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
+            body{
+                background:black;
+            }
             .library{
                 width:5%;
                 height:510px;
@@ -66,11 +69,23 @@
             .main.smaller{
                 width:78%
             }
+            .voiceSearch{
+                position:fixed;
+                bottom:20px;
+                right:30px;
+                height:100px;
+                width:100px;
+                border:none;
+                border-radius:50%;
+                background:green;
+                color:white;
+            }
         </style>
         <link rel="stylesheet" href="css/navibar.css" />
     </head>
     <body>
         <div class="navibar">
+            <button onclick="window.location.href='index.html'">Home</button>
             <input type="text" class="input" placeholder="Search..."/>
             <button onclick="window.location.href='browse.html'">Browse</button>
             <button onclick="window.location.href='Login.html'">Login</button>
@@ -79,8 +94,8 @@
             <button class="move" id="moveI">></button>
         </div>
         <div class="main">
-
         </div>
+        <button class="voiceSearch" onclick="window.location.href='voiceSearch.html'">Voice<br>Search</button>
         <script>
             const move=document.getElementById('moveI');
             const library=document.querySelector('.library');

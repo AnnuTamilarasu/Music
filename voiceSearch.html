@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body{
+                background:rgb(45, 45, 45);
+            }
+            .container{
+                background:rgb(24, 24, 24);
+                position:fixed;
+                width:60%;
+                height:500px;
+                border-radius:20px;
+                border:3px solid grey;
+                top:80px;
+                left:250px;
+                display:flex;
+                flex-direction:column;
+                gap:30px;
+                align-items:center;
+            }
+            .container button{
+                color:white;
+                background:green;
+                position:absolute;
+                top:370px;
+                left:350px;
+                border:none;
+                border-radius:50%;
+                height:100px;
+                width:100px;
+            }
+            .container canvas{
+                width:500px; 
+                height:250px; 
+                background:white; 
+                border-radius:10px;
+                position:absolute;
+                top:100px;
+            }
+        </style>
+        <link rel="stylesheet" href="css/navibar.css" />
+    </head>
+    <body>
+        <div class="navibar">
+            <button onclick="window.location.href='index.html'">Home</button>
+            <input type="text" class="input" placeholder="Search..."/>
+            <button onclick="window.location.href='browse.html'">Browse</button>
+            <button onclick="window.location.href='Login.html'">Login</button>
+        </div>
+        <div class="container">
+            <div class="result" id="result"></div>
+            <canvas id="visualizer" width="500" height="250"></canvas>
+            <button id="start" >Start</button>
+        <button id="stop">Stop</button>
+        </div>
+        <script>
+            let text;
+            let analyze;
+            let data;
+            let animation;
+            let chunks = [];
+            let media;
+            const start=document.getElementById("start");
+            const stop=document.getElementById("stop");
+            stop.style.display="none";
+            stop.disabled=true;
+
+            async function startVisualizer(stream) {
+                text= new (window.AudioContext || window.webkitAudioContext)();
+
+                analyze= text.createAnalyser();
+                analyze.fftSize = 1024;
+
+                const source = text.createMediaStreamSource(stream);
+                source.connect(analyze);
+                
+                const bufferLength = analyze.fftSize;
+                data = new Uint8Array(bufferLength);
+
+                drawWave();
+            }
+
+            function drawWave() {
+                animation=requestAnimationFrame(drawWave);
+
+                analyze.getByteTimeDomainData(data);
+
+                const canvas = document.getElementById("visualizer");
+                const content = canvas.getContext("2d");
+
+                content.fillStyle = "black";
+                content.fillRect(0, 0, canvas.width, canvas.height);
+                
+                content.lineWidth = 2;
+                content.strokeStyle = "lime";
+                content.beginPath();
+
+                const Cwidth = canvas.width / data.length;
+                let x = 0;
+
+                for (let i = 0; i < data.length; i++) {
+                    const v = data[i] / 128.0;
+                    const y = v * canvas.height / 2;
+
+                    if (i === 0) content.moveTo(x, y);
+                    else content.lineTo(x, y);
+
+                    x += Cwidth;
+                }
+
+                content.lineTo(canvas.width, canvas.height / 2);
+                content.stroke();
+            }
+
+            start.addEventListener("click", async () => {
+                start.style.display="none";
+                start.disabled=true;
+                stop.style.display="block";
+                stop.disabled=false;
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                startVisualizer(stream);
+                media = new MediaRecorder(stream,{mimeType:"audio/webm"});
+                chunks = [];
+                media.ondataavailable = e => chunks.push(e.data);
+                startTime=Date.now();
+
+                media.onstop = async () => {
+                    cancelAnimationFrame(animation);
+                    stream.getTracks().forEach(t=>t.stop());
+
+                    const blob = new Blob(chunks, { type: 'audio/webm' });
+                    const formData = new FormData();
+                    formData.append("audio", blob, "recording.webm");
+
+                    const resultDiv = document.getElementById("result");
+
+                    try {
+                        const res = await fetch("/music", { method: "POST", body: formData });
+                        if (!res.ok) throw new Error("Server error " + res.status);
+
+                        const result = await res.json();
+
+                        if (result?.metadata?.humming) {
+                            const best = result.metadata.humming[0];
+                            const artists = best.artists ? best.artists.map(a => a.name).join(", ") : "Unknown";
+
+                            resultDiv.innerHTML = `
+                            <div style="color:white;">
+                                <strong>Best match:</strong><br>
+                                ${best.title} - ${artists}
+                                <br><strong>Score:</strong> ${best.score}
+                                </div>
+                                `;
+                            } else {
+                                resultDiv.textContent = "No matches found.";
+                                resultDiv.style.color="white";
+                            }
+                        } catch (err) {
+                            resultDiv.textContent = "Recognition failed: " + err.message;
+                        }
+                };
+            
+                media.start();
+            });
+            stop.addEventListener("click",()=>{
+                if(Date.now()-startTime>200){
+                    media.stop();
+                stop.style.display="none";
+                stop.disabled=true;
+                start.style.display="block";
+                start.disabled=false;
+                }
+            });
+
+            
+        </script>
+    </body>
+</html>
