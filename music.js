@@ -1,4 +1,4 @@
-const express = require('express');
+/*const express = require('express');
 const multer = require('multer');
 const ACRCloud = require('acrcloud');
 
@@ -39,4 +39,4 @@ app.post('/music', upload.single('audio'), async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log("Server running on http://localhost:3000"));
+app.listen(3000, () => console.log("Server running on http://localhost:3000"));*/

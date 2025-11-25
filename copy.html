@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+  </head>
+  <body>
+    <script>
+      export function Container({ children, style = {} }) {
+  return (
+    <div
+      style={{
+        maxWidth: "900px",
+        margin: "0 auto",
+        padding: "20px",
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+export function Row({ children, style = {} }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        gap: "10px",
+        flexWrap: "wrap",
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+export function Card({ children, style = {} }) {
+  return (
+    <div
+      style={{
+        padding: "16px",
+        borderRadius: "10px",
+        background: "#fff",
+        border: "1px solid #ddd",
+        boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+export function CardImg({ src, alt = "", style = {} }) {
+  return (
+    <img
+      src={src}
+      alt={alt}
+      style={{
+        width: "100%",
+        borderRadius: "6px",
+        ...style,
+      }}
+    />
+  );
+}
+export function CardBody({ children, style = {} }) {
+  return <div style={{ marginTop: "10px", ...style }}>{children}</div>;
+}
+export function CardTitle({ children, style = {} }) {
+  return (
+    <h3 style={{ margin: 0, fontSize: "1.2rem", ...style }}>
+      {children}
+    </h3>
+  );
+}
+export function Button({ children, onClick, style = {} }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        padding: "8px 16px",
+        background: "#1db954",
+        border: "none",
+        borderRadius: "6px",
+        color: "white",
+        cursor: "pointer",
+        fontSize: "1rem",
+        ...style,
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+export function InputGroup({ children, style = {} }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        border: "1px solid #ccc",
+        borderRadius: "6px",
+        overflow: "hidden",
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+export function FormControl({ value, onChange, placeholder, style = {} }) {
+  return (
+    <input
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      style={{
+        flex: 1,
+        padding: "8px 10px",
+        border: "none",
+        outline: "none",
+        fontSize: "1rem",
+        ...style,
+      }}
+    />
+  );
+}
+    </script>
+  </body>
+</html>
